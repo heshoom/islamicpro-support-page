@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Islamic Pro — Support</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>Islamic Pro — Support</h1>
+      <p>Get help with Prayer times, subscriptions, account issues, and more.</p>
+    </div>
+  </header>
+
+  
+
+  <main class="wrap">
+
+    <section class="card">
+      <h2>Quick troubleshooting</h2>
+      <ul>
+        <li>Ensure Location Services are enabled for the app.</li>
+        <li>Check your device clock/timezone are set correctly.</li>
+        <li>Restart the app after changing settings.</li>
+        <li>Update to the latest version from the App Store.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Common questions</h2>
+
+      <details>
+        <summary>Why are prayer times different?</summary>
+        <p>Prayer times depend on selected calculation method and juristic settings. Verify your method in Settings → Prayer Times.</p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Contact support</h2>
+      <p>If you need help, please fill out the form below. Include your device model, iOS version, and a short description of the issue.</p>
+      <form id="support-form" class="support-form" action="#" method="post">
+        <label for="device">Device model</label>
+        <input id="device" name="device" type="text" placeholder="e.g. iPhone 12 Pro" required />
+
+        <label for="ios">iOS version</label>
+        <input id="ios" name="ios" type="text" placeholder="e.g. iOS 17.0" required />
+
+        <label for="email">Your email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+        <label for="desc">Short description of the issue</label>
+        <textarea id="desc" name="desc" rows="5" placeholder="Describe the problem here" required></textarea>
+
+        <div id="form-status" class="notice" style="display:none"></div>
+        <div class="form-row">
+          <button id="submit-btn" class="btn" type="submit">Send to support</button>
+          <small class="muted">Submissions are sent directly to our support inbox.</small>
+        </div>
+      </form>
+    </section>
+
+    <section class="card small">
+      <h3>Privacy & Terms</h3>
+      <p>Privacy policy and terms of use are available in the app. Contact support if you need the documents sent to you.</p>
+    </section>
+
+    <footer class="footer">
+      <p>Support URL for App Store Connect: <code>https://your-domain.com/support/</code></p>
+      <p>Replace the email <code>islamicpro@support.org</code> and the URL with your production values before publishing.</p>
+    </footer>
+
+  </main>
+  <script>
+    // Submit the form via fetch to a serverless email endpoint (Formspree example).
+    (function(){
+      var form = document.getElementById('support-form');
+      var status = document.getElementById('form-status');
+      var submitBtn = document.getElementById('submit-btn');
+      if(!form) return;
+
+      // Replace with your real endpoint. Example: Formspree endpoint URL
+      var ENDPOINT = 'https://formspree.io/f/mvgqewoy';
+
+      function showMessage(text, ok){
+        status.style.display = 'block';
+        status.textContent = text;
+        status.style.color = ok ? 'green' : 'crimson';
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        submitBtn.disabled = true;
+        status.style.display = 'none';
+
+        var payload = {
+          device: document.getElementById('device').value.trim(),
+          ios: document.getElementById('ios').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          desc: document.getElementById('desc').value.trim()
+        };
+
+        // Basic client-side validation
+        if(!payload.device || !payload.ios || !payload.email || !payload.desc){
+          showMessage('Please fill all fields.', false);
+          submitBtn.disabled = false;
+          return;
+        }
+
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','Accept':'application/json'},
+          body: JSON.stringify(payload)
+        }).then(function(res){
+          if(res.ok){
+            showMessage('Thanks — your message was sent. We will reply to the email you provided.', true);
+            form.reset();
+          } else {
+            return res.json().then(function(data){
+              var msg = (data && data.error) ? data.error : 'Submission failed';
+              throw new Error(msg);
+            });
+          }
+        }).catch(function(err){
+          showMessage('Failed to send: ' + err.message + '. Please email islamicpro@support.org directly.', false);
+        }).finally(function(){
+          submitBtn.disabled = false;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
