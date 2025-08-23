@@ -11,6 +11,12 @@ body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Rob
 .hero{background:linear-gradient(90deg,#eef6ff,transparent);padding:36px 0 18px;border-bottom:1px solid rgba(15,23,42,0.04)}
 .hero h1{margin:0 0 6px;font-size:28px}
 .hero p{margin:0;color:var(--muted)}
+/* site header navigation */
+header .hero nav{margin-bottom:12px;font-size:15px}
+header .hero nav a{color:var(--accent);text-decoration:none;font-weight:600;padding:6px 8px;border-radius:8px}
+header .hero nav a:hover{background:rgba(44,110,240,0.08);text-decoration:none}
+header .hero nav a.active{background:var(--accent);color:white}
+
 .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 1px 4px rgba(2,6,23,0.04);margin:18px 0}
 .card h2{margin-top:0}
 .card.small{max-width:420px}
